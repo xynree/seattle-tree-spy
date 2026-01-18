@@ -1,0 +1,8 @@
+ignoredBuiltDependencies:
+  - esbuild
+
+packages:
+  - "*"
+  - "!_data"
+  - "!_scripts"
+  - "!_notebooks"
