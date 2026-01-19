@@ -7,10 +7,16 @@ const treeModel = "./models/tree2.glb";
 type TreeLayerProps = {
   trees: any[];
   sizeScale?: number;
+  showRemoved?: boolean
 };
 
-export function TreeLayer({ trees, sizeScale = 1, }: TreeLayerProps) {
+export function TreeLayer({ trees, sizeScale = 1, showRemoved = false }: TreeLayerProps) {
   if (!trees.length) return null;
+
+  if (!showRemoved) {
+    trees = trees.filter((t) => t.properties.CURRENT_STATUS !== "REMOVED")
+  }
+  console.log(trees)
 
   return new ScenegraphLayer({
     id: "trees",

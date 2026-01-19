@@ -51,6 +51,12 @@ export default function TreePopup({
       <div><b>Planted:</b> {formatDate(p.PLANTED_DATE)}</div>
       <div><b>Last verified:</b> {formatDate(p.LAST_VERIFY_DATE)}</div>
 
+      <hr style={{ margin: "6px 0" }} />
+
+      <div><b>Rank:</b>{p.TOTAL_RANK}</div>
+      <div><b>Total count:</b>{p.TOTAL_COUNT}</div>
+
+
     </div>
   );
 }
