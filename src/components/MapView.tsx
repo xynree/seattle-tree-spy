@@ -22,7 +22,13 @@ export default function MapView() {
   return (
     <DeckGL
       initialViewState={viewState}
-      controller={{ dragRotate: false }}
+      controller={{
+        dragRotate: true,  // allow the user to rotate bearing/pitch
+        doubleClickZoom: true,
+        scrollZoom: true,
+        dragPan: true,
+        keyboard: true,
+      }}
       onViewStateChange={e => setViewState(e.viewState)}
       layers={layers}
       onHover={info => {

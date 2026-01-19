@@ -1,19 +1,28 @@
 import { WebMercatorViewport } from "deck.gl";
 
 // Returns bounds in degrees
-export function getViewportBounds(viewState: any) {
-  const { longitude, latitude, zoom, width, height } = viewState;
-  const viewport = new WebMercatorViewport({ longitude, latitude, zoom, width, height });
+export function getViewportBounds(viewState) {
+  const vp = new WebMercatorViewport(viewState);
+  
+  // screen coordinates of the four corners
+  const corners = [
+    [0, 0], // top-left
+    [vp.width, 0], // top-right
+    [vp.width, vp.height], // bottom-right
+    [0, vp.height], // bottom-left
+  ];
 
-  // Get the corners in [lng, lat] (degrees)
-  const nw = viewport.unproject([0, 0]); // top-left
-  const se = viewport.unproject([width, height]); // bottom-right
+  // unproject to lon/lat
+  const lngLats = corners.map(([x, y]) => vp.unproject([x, y]));
+  
+  const lons = lngLats.map(c => c[0]);
+  const lats = lngLats.map(c => c[1]);
 
   return {
-    west: nw[0],
-    north: nw[1],
-    east: se[0],
-    south: se[1],
+    west: Math.min(...lons),
+    east: Math.max(...lons),
+    south: Math.min(...lats),
+    north: Math.max(...lats),
   };
 }
 
@@ -27,6 +36,16 @@ export function filterGeoJSONByBounds(features: any[], bounds: any) {
       lat <= bounds.north
     );
   });
+}
+
+// Simple deterministic hash from a string/number to 0..1
+export function hashToUnit(value: string | number) {
+  let str = String(value);
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  return (hash % 360) ; // degrees 0..359
 }
 
 export function makeArcGISViewportQuery(bounds: {

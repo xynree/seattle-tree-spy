@@ -1,4 +1,6 @@
 import { ScenegraphLayer } from "@deck.gl/mesh-layers";
+import { COORDINATE_SYSTEM } from "deck.gl";
+import { hashToUnit } from "../helpers";
 
 const treeModel = "./models/tree2.glb";
 
@@ -16,7 +18,12 @@ export function TreeLayer({ trees, sizeScale = 1, }: TreeLayerProps) {
     pickable: true,
     scenegraph: treeModel,
     getPosition: f => [f.geometry.coordinates[0], f.geometry.coordinates[1], 0],
-    getOrientation: [0, 0, 0],
+    getOrientation: f => {
+      const id = f.properties?.id || f.id; // whatever uniquely identifies the tree
+      const yaw = hashToUnit(id) * 360;   // 0..360 degrees
+      return [yaw, 0, 0];                 // yaw, pitch, roll
+    },    
+    coordinateSystem: COORDINATE_SYSTEM.LNGLAT,
     sizeScale,
     _lighting: "pbr",
   });

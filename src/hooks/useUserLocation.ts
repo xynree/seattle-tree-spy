@@ -4,7 +4,7 @@ const SEATTLE_FALLBACK_VIEW = {
   longitude: -122.335167,
   latitude: 47.608013,
   zoom: 18,
-  pitch: 0,
+  pitch: 50,
 };
 
 export function useUserLocation() {

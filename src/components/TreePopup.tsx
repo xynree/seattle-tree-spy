@@ -1,5 +1,7 @@
 // src/TreePopup.tsx
 
+import WikipediaImage from "./WikipediaImage";
+
 type TreePopupProps = {
   x: number;
   y: number;
@@ -34,6 +36,9 @@ export default function TreePopup({
       </div>
 
       <div><b>Scientific:</b> {p.SCIENTIFIC_NAME || "—"}</div>
+      {/* Wikipedia image */}
+  {p.SCIENTIFIC_NAME && <WikipediaImage scientificName={p.SCIENTIFIC_NAME} width={150} />}
+
       <div><b>Genus:</b> {p.GENUS || "—"}</div>
       <div><b>Diameter:</b> {p.DIAM ? `${p.DIAM} in` : "—"}</div>
       <div><b>Grow space:</b> {p.GROWSPACE ?? "—"} ft²</div>
