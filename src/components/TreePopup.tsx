@@ -23,7 +23,7 @@ export default function TreePopup({
 
   return (
     <div
-    className="absolute bg-white p-6 rounded-md max-w-2xl z-10 shadow-md"
+    className="absolute bg-white p-3 rounded-xl max-w-2xl z-10 shadow-md"
       style={{
         left: x,
         top: y,
@@ -35,7 +35,7 @@ export default function TreePopup({
         🌳 {p.COMMON_NAME || "Unknown Tree"}
       </div>
 
-      <div><b>Scientific:</b> {p.SCIENTIFIC_NAME || "—"}</div>
+      <div className="italic"> {p.SCIENTIFIC_NAME || "—"}</div>
       {/* Wikipedia image */}
   {p.SCIENTIFIC_NAME && <WikipediaImage scientificName={p.SCIENTIFIC_NAME} width={150} />}
 

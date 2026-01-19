@@ -23,7 +23,7 @@ export default function MapView() {
   ].filter(Boolean);
 
   return (
-    <>
+    <div className="w-screen h-screen">
       <ControlsOverlay onStateChange={(state) => setShowRemoved(state.showRemoved)} />
       <DeckGL
         initialViewState={viewState}
@@ -62,6 +62,6 @@ export default function MapView() {
           />
         )}
       </DeckGL>
-    </>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getViewportBounds, makeArcGISViewportQuery } from "../helpers";
 
-const TREE_ZOOM_THRESHOLD = 16;
+const TREE_ZOOM_THRESHOLD = 12;
 const DEBOUNCE_MS = 300;
 
 export function useTreesInView(viewState: any) {
