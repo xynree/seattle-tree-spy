@@ -1,20 +1,29 @@
 import { ScenegraphLayer } from "@deck.gl/mesh-layers";
 import { COORDINATE_SYSTEM } from "deck.gl";
 import { hashToUnit } from "../helpers";
+import type { ControlOptions } from "../types/controls.types";
 
 const treeModel = "./models/tree2.glb";
 
 type TreeLayerProps = {
   trees: any[];
   sizeScale?: number;
-  showRemoved?: boolean
+  options: ControlOptions
 };
 
-export function TreeLayer({ trees, sizeScale = 1, showRemoved = false }: TreeLayerProps) {
+export function TreeLayer({ trees, sizeScale = 1, options}: TreeLayerProps) {
   if (!trees.length) return null;
 
-  if (!showRemoved) {
+  if (!options.showRemoved) {
     trees = trees.filter((t) => t.properties.CURRENT_STATUS !== "REMOVED")
+  }
+
+  if (!options.showPrivate) {
+    trees = trees.filter((t) => t.properties.OWNERSHIP !== "PRIV" )
+  }
+
+  if (!options.showPlanned) {
+    trees = trees.filter((t) => t.properties.CURRENT_STATUS !== "PLANNED" )
   }
 
   return new ScenegraphLayer({

@@ -12,25 +12,30 @@ export default function MapView() {
   const [viewState, setViewState] = useUserLocation();
   const trees = useTreesInView(viewState);
   const [popup, setPopup] = useState<any>(null);
-  const [showRemoved, setShowRemoved] = useState(false);
+
+  const [options, setOptions] = useState({
+    showRemoved: false,
+    showPrivate: true,
+    showPlanned: false
+  })
 
   const layers = [
     BaseMapLayer(),
     TreeLayer({
       trees,
       sizeScale: 1,
-      showRemoved,
+      options
     }),
-  ].filter(Boolean);
+  ]
 
   return (
     <div className="w-screen h-screen">
-      <WelcomeOverlay/>
-      <ControlsOverlay onStateChange={(state) => setShowRemoved(state.showRemoved)} />
+      <WelcomeOverlay />
+      <ControlsOverlay options={options} setOptions={setOptions} />
       <DeckGL
         initialViewState={viewState}
         controller={{
-          dragRotate: true,  // allow the user to rotate bearing/pitch
+          dragRotate: true,
           doubleClickZoom: true,
           scrollZoom: true,
           dragPan: true,
