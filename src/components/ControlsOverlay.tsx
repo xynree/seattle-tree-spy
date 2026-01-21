@@ -16,7 +16,7 @@ export default function ControlsOverlay({ options, setOptions }: ControlsOverlay
   };
 
   return (
-    <div className="flex flex-col gap-1 bg-white rounded-xl z-10 absolute left-8 top-4 p-4 shadow-md">
+    <div className="flex flex-col gap-1 bg-white rounded-xl z-10 relative p-4 shadow-md">
       <div className="flex items-center gap-2">
         <input
           type="checkbox"

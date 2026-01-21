@@ -3,13 +3,14 @@ import { BaseMapLayer } from "../layers/BaseMapLayer";
 import { TreeLayer } from "../layers/TreeLayer";
 import { useUserLocation } from "../hooks/useUserLocation";
 import { useTreesInView } from "../hooks/useTreesInView";
-import TreePopup from "./TreePopup";
+import TreePopup from "./FeatureCard";
 import ControlsOverlay from "./ControlsOverlay";
 import { useState } from "react";
 import WelcomeOverlay from "./WelcomeOverlay";
 import { DEFAULT_CONTROLS } from "../config/controls.config";
 import AttributionOverlay from "./AttributionOverlay";
 import type { TreeFeature } from "../types/types";
+import MousePopup from "./MousePopup";
 
 
 export default function MapView() {
@@ -33,9 +34,26 @@ export default function MapView() {
 
   return (
     <div className="w-screen h-screen">
+
+
+      {/* Left Panels */}
+      <div className="absolute top-8 left-8">
+        <TreePopup
+          feature={popup?.feature}
+        />
+      </div>
+
+      {/* Right Panels */}
+      <div className="absolute top-8 right-8">
+        <ControlsOverlay options={options} setOptions={setOptions} />
+      </div>
+
       <WelcomeOverlay />
       <AttributionOverlay />
-      <ControlsOverlay options={options} setOptions={setOptions} />
+      {popup ? <MousePopup popup={popup} />
+        : ''}
+
+      {/* Map */}
       <DeckGL
         initialViewState={viewState}
         controller={{
@@ -62,12 +80,7 @@ export default function MapView() {
           width: "100vw",
           height: "100vh",
         }}
-      >
-
-        <TreePopup
-          popup={popup}
-        />
-      </DeckGL>
+      />
     </div>
   );
 }
