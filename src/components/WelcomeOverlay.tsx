@@ -17,11 +17,11 @@ export default function WelcomeOverlay() {
           <div className="text-gray-700 text-sm">
 
             <p >
-              This realtime interactive map provides a view of all current trees along public roadways tracked by SDOT (Seattle Department of Transportation) in the Seattle metro area.
+              This interactive map visualizes all publicly maintained street trees tracked by the Seattle Department of Transportation (SDOT) across the Seattle metro area.
             </p>
 
             <p>
-              Data is thanks to the City of Seattle's <a className="text-blue-700 underline" href="https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::sdot-trees">SDOT Trees</a> aggregation.
+              Data is sourced from the City of Seattle's <a className="text-blue-700 underline" href="https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::sdot-trees">SDOT Trees</a> dataset.
             </p>
           </div>
 

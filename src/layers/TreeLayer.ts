@@ -38,6 +38,15 @@ export function TreeLayer({ trees, options}: TreeLayerProps) {
     },    
     coordinateSystem: COORDINATE_SYSTEM.LNGLAT,
     sizeScale: 1,
+    getColor: f => {
+      const isPlanned = f.properties?.CURRENT_STATUS === "PLANNED";
+      if (isPlanned) {
+        // Gray color with reduced opacity for planned trees
+        return [255, 255, 255, 120] as [number, number, number, number]; 
+      }
+      // Normal trees - full opacity
+      return [255, 255, 255, 255] as [number, number, number, number];
+    },
     getScale: f => {
       if (!options.scaleBySize) return [1, 1, 1] as [number, number, number];
       

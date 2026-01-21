@@ -8,6 +8,7 @@ import ControlsOverlay from "./ControlsOverlay";
 import { useState } from "react";
 import WelcomeOverlay from "./WelcomeOverlay";
 import { DEFAULT_CONTROLS } from "../config/controls.config";
+import AttributionOverlay from "./AttributionOverlay";
 
 
 export default function MapView() {
@@ -28,6 +29,7 @@ export default function MapView() {
   return (
     <div className="w-screen h-screen">
       <WelcomeOverlay />
+      <AttributionOverlay />
       <ControlsOverlay options={options} setOptions={setOptions} />
       <DeckGL
         initialViewState={viewState}
@@ -42,7 +44,6 @@ export default function MapView() {
         layers={layers}
         onHover={info => {
           if (info.object) {
-            console.log(info.object)
             setPopup({
               x: info.x,
               y: info.y,
