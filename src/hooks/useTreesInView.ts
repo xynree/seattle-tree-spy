@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { getViewportBounds, makeArcGISViewportQuery } from "../helpers";
 import type { TreeFeature, TreeFeatureCollection } from "../types/types";
+import type { MapViewState } from "deck.gl";
 
 const TREE_ZOOM_THRESHOLD = 12;
 const DEBOUNCE_MS = 300;
 
-export function useTreesInView(viewState: any) {
+export function useTreesInView(viewState: MapViewState) {
   const [trees, setTrees] = useState<TreeFeature[]>([]);
   const timer = useRef<number | null>(null);
 
   useEffect(() => {
     if (viewState.zoom < TREE_ZOOM_THRESHOLD) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTrees([]);
       return;
     }

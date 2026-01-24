@@ -19,14 +19,14 @@ export interface TreeProperties {
   UNITDESC: string;
   CONDITION: string | null;
   CONDITION_ASSESSMENT_DATE: number | null;
-  CURRENT_STATUS: "INSVC" | "REMOVED" | "PLANNED" | string;
+  CURRENT_STATUS: "INSVC" | "REMOVED" | "PLANNED";
   PRIMARYDISTRICTCD: string;
   SECONDARYDISTRICTCD: string | null;
   OVERRIDEYN: "Y" | "N";
   COMPTYPE: number;
   SEGKEY: number;
   UNITTYPE: string;
-  OWNERSHIP: "PRIV" | "CITY" | string;
+  OWNERSHIP: "PRIV" | "CITY";
   CURRENT_STATUS_DATE: number | null;
   LAST_VERIFY_DATE: number | null;
   PLANTED_DATE: number | null;

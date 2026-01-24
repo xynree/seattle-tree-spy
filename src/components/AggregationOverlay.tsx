@@ -1,34 +1,36 @@
 import { useEffect, useRef } from "react";
 import type { TreeFeature } from "../types/types";
-import Chart from 'chart.js/auto'
+import Chart from "chart.js/auto";
 
-export default function AggregationOverlay({ features }: { features: TreeFeature[] | null }) {
+export default function AggregationOverlay({
+  features,
+}: {
+  features: TreeFeature[] | null;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartRef = useRef<Chart | null>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   const DEBOUNCE_DELAY = 1000; // 1s debounce
 
-
   useEffect(() => {
     if (!canvasRef.current || !features.length) return;
 
-    // Clear existing timer
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
-    // Set new debounced timer
     debounceTimer.current = setTimeout(() => {
+      const genusCounts = features.reduce(
+        (acc, curr) => {
+          if (curr.properties.GENUS) {
+            acc[curr.properties.GENUS] = (acc[curr.properties.GENUS] || 0) + 1;
+          }
 
-      const genusCounts = features.reduce((acc, curr) => {
-        if (curr.properties.GENUS) {
-          acc[curr.properties.GENUS] = (acc[curr.properties.GENUS] || 0) + 1
-
-        }
-
-        return acc
-      }, {} as Record<string, number>)
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
       chartRef.current = new Chart(canvasRef.current, {
         type: "doughnut",
@@ -39,9 +41,9 @@ export default function AggregationOverlay({ features }: { features: TreeFeature
             },
             title: {
               display: true,
-              text: 'Distribution of Genuses in View'
-            }
-          }
+              text: "Distribution of Genuses in View",
+            },
+          },
         },
         data: {
           labels: Object.keys(genusCounts),
@@ -52,8 +54,8 @@ export default function AggregationOverlay({ features }: { features: TreeFeature
             },
           ],
         },
-      })
-    }, DEBOUNCE_DELAY)
+      });
+    }, DEBOUNCE_DELAY);
 
     return () => {
       if (chartRef.current) {
@@ -67,5 +69,5 @@ export default function AggregationOverlay({ features }: { features: TreeFeature
     <div className="text-sm flex flex-col items-center gap-2 bg-white shadow-sm relative p-3 rounded-xl z-10 min-h-12">
       <canvas ref={canvasRef} />
     </div>
-  )
+  );
 }

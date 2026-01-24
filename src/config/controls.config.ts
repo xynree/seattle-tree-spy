@@ -5,4 +5,4 @@ export const DEFAULT_CONTROLS: ControlOptions = {
   showPrivate: true,
   showPlanned: false,
   scaleBySize: true,
-}
+};

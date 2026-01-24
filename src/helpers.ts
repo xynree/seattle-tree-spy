@@ -1,8 +1,8 @@
-import { WebMercatorViewport } from "deck.gl";
+import { WebMercatorViewport, type MapViewState } from "deck.gl";
 import type { TreeFeature } from "./types/types";
 
 // Returns bounds in degrees
-export function getViewportBounds(viewState) {
+export function getViewportBounds(viewState: MapViewState) {
   const vp = new WebMercatorViewport(viewState);
 
   // screen coordinates of the four corners
@@ -27,7 +27,15 @@ export function getViewportBounds(viewState) {
   };
 }
 
-export function filterGeoJSONByBounds(features: any[], bounds: any) {
+export function filterGeoJSONByBounds(
+  features: TreeFeature[],
+  bounds: {
+    west: number;
+    east: number;
+    south: number;
+    north: number;
+  },
+) {
   return features.filter((f) => {
     const [lng, lat] = f.geometry.coordinates;
     return (
@@ -41,7 +49,7 @@ export function filterGeoJSONByBounds(features: any[], bounds: any) {
 
 // Simple deterministic hash from a string/number to 0..1
 export function hashToUnit(value: string | number) {
-  let str = String(value);
+  const str = String(value);
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = (hash * 31 + str.charCodeAt(i)) >>> 0;

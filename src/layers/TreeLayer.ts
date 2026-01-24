@@ -1,12 +1,12 @@
 import { ScenegraphLayer } from "@deck.gl/mesh-layers";
 import { COORDINATE_SYSTEM } from "deck.gl";
 import { computeScale, hashToUnit } from "../helpers";
-import type { ControlOptions } from "../types/types";
+import type { ControlOptions, TreeFeature } from "../types/types";
 
 const treeModel = "/seattle-tree-data-viz/models/tree2.glb";
 
 type TreeLayerProps = {
-  trees: any[];
+  trees: TreeFeature[];
   options: ControlOptions;
   selectedId: string | number | null;
 };
@@ -31,19 +31,18 @@ export function TreeLayer({ trees, options, selectedId }: TreeLayerProps) {
     data: trees,
     pickable: true,
     scenegraph: treeModel,
-    getPosition: (f) => [
+    getPosition: (f: TreeFeature) => [
       f.geometry.coordinates[0],
       f.geometry.coordinates[1],
       0,
     ],
-    getOrientation: (f) => {
-      const id = f.properties?.id || f.id; // whatever uniquely identifies the tree
-      const yaw = hashToUnit(id) * 360; // 0..360 degrees
+    getOrientation: (f: TreeFeature) => {
+      const yaw = hashToUnit(f.id) * 360; // 0..360 degrees
       return [yaw, 0, 0]; // yaw, pitch, roll
     },
     coordinateSystem: COORDINATE_SYSTEM.LNGLAT,
     sizeScale: 1,
-    getColor: (f) => {
+    getColor: (f: TreeFeature) => {
       const isPlanned = f.properties?.CURRENT_STATUS === "PLANNED";
       const isSelected = selectedId && f.id === selectedId;
 
@@ -60,7 +59,7 @@ export function TreeLayer({ trees, options, selectedId }: TreeLayerProps) {
       // Normal trees - full opacity
       return [255, 255, 255, 255] as [number, number, number, number];
     },
-    getScale: (f) => {
+    getScale: (f: TreeFeature) => {
       const baseScale = computeScale({ f, scaleBySize: options.scaleBySize });
       if (selectedId && f.id === selectedId) {
         return baseScale.map((s) => s * 1.05) as [number, number, number];

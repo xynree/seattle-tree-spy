@@ -12,32 +12,31 @@ import AttributionOverlay from "./AttributionOverlay";
 import type { TreeFeature } from "../types/types";
 import MousePopup from "./MousePopup";
 import AggregationOverlay from "./AggregationOverlay";
-
+import type { MapViewState, PickingInfo } from "deck.gl";
 
 export default function MapView() {
   const [viewState, setViewState] = useUserLocation();
   const trees = useTreesInView(viewState);
-  const [selected, setSelected] = useState<TreeFeature>(null)
+  const [selected, setSelected] = useState<TreeFeature>(null);
   const [popup, setPopup] = useState<{
-    x: number,
-    y: number,
-    feature: TreeFeature
+    x: number;
+    y: number;
+    feature: TreeFeature;
   }>(null);
 
-  const [options, setOptions] = useState(DEFAULT_CONTROLS)
+  const [options, setOptions] = useState(DEFAULT_CONTROLS);
 
   const layers = [
     BaseMapLayer(),
     TreeLayer({
       trees,
       options,
-      selectedId: selected?.id
+      selectedId: selected?.id,
     }),
-  ]
+  ];
 
   return (
     <div className="w-screen h-screen">
-
       {/* Left Panels */}
       <div className="absolute flex flex-col gap-4 top-4 left-4">
         <FeatureCard feature={selected} />
@@ -46,8 +45,7 @@ export default function MapView() {
 
       <WelcomeOverlay />
       <AttributionOverlay />
-      {popup ? <MousePopup popup={popup} />
-        : ''}
+      {popup ? <MousePopup popup={popup} /> : ""}
 
       {/* Right Panels */}
       <div className="absolute top-4 right-4">
@@ -64,9 +62,11 @@ export default function MapView() {
           dragPan: true,
           keyboard: true,
         }}
-        onViewStateChange={e => setViewState(e.viewState)}
+        onViewStateChange={(e) =>
+          setViewState(e.viewState as unknown as MapViewState)
+        }
         layers={layers}
-        onHover={info => {
+        onHover={(info: PickingInfo<TreeFeature>) => {
           if (info.object) {
             setPopup({
               x: info.x,
@@ -77,9 +77,9 @@ export default function MapView() {
             setPopup(null);
           }
         }}
-        onClick={(info) => {
+        onClick={(info: PickingInfo<TreeFeature>) => {
           if (info.object) {
-            setSelected(info.object as TreeFeature)
+            setSelected(info.object);
           }
         }}
         style={{

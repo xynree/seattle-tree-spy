@@ -1,19 +1,22 @@
 import type { ControlOptions } from "../types/types";
 
 type ControlsOverlayProps = {
-  options: ControlOptions,
-  setOptions: React.Dispatch<React.SetStateAction<ControlOptions>>
+  options: ControlOptions;
+  setOptions: React.Dispatch<React.SetStateAction<ControlOptions>>;
 };
 
-export default function ControlsOverlay({ options, setOptions }: ControlsOverlayProps) {
+export default function ControlsOverlay({
+  options,
+  setOptions,
+}: ControlsOverlayProps) {
   function handleChange(checked: boolean, id: string) {
     setOptions({
       showRemoved: id === "show-removed" ? checked : options.showRemoved,
       showPrivate: id === "show-private" ? checked : options.showPrivate,
       showPlanned: id === "show-planned" ? checked : options.showPlanned,
-      scaleBySize: id === "scale-by-size" ? checked : options.scaleBySize
-    })
-  };
+      scaleBySize: id === "scale-by-size" ? checked : options.scaleBySize,
+    });
+  }
 
   return (
     <div className="flex flex-col gap-1 bg-white rounded-xl z-10 relative p-4 shadow-md">
