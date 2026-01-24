@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import type { TreeFeature } from "../types/types";
 import WikipediaImage from "./WikipediaImage";
 import { formatDate } from "../helpers";
@@ -8,65 +8,62 @@ export default function FeatureCard({
 }: {
   feature: TreeFeature | null;
 }) {
-  const [lastFeature, setLastFeature] = useState(null);
-  const p = lastFeature?.properties;
-
-  useEffect(() => {
+  const properties = useMemo(() => {
     if (feature) {
-      setLastFeature(feature);
-    }
+      return feature.properties;
+    } else return null;
   }, [feature]);
 
   return (
     <>
       {/* // Upper Right Feature Card */}
-      {lastFeature ? (
+      {properties ? (
         <div className="relative min-w-96 bg-white p-3 rounded-xl max-w-2xl z-10 shadow-md">
           <div style={{ fontWeight: 600, marginBottom: 6 }}>
-            🌳 {p.COMMON_NAME || "Unknown Tree"}
+            🌳 {properties.COMMON_NAME || "Unknown Tree"}
           </div>
 
-          <div className="italic"> {p.SCIENTIFIC_NAME || "—"}</div>
+          <div className="italic"> {properties.SCIENTIFIC_NAME || "—"}</div>
           {/* Wikipedia image */}
-          <WikipediaImage scientificName={p.SCIENTIFIC_NAME} width={150} />
+          <WikipediaImage scientificName={properties.SCIENTIFIC_NAME} />
 
           <div>
-            <b>Genus:</b> {p.GENUS || "—"}
+            <b>Genus:</b> {properties.GENUS || "—"}
           </div>
           <div>
-            <b>Diameter:</b> {p.DIAM ? `${p.DIAM} in` : "—"}
+            <b>Diameter:</b> {properties.DIAM ? `${properties.DIAM} in` : "—"}
           </div>
           <div>
-            <b>Grow space:</b> {p.GROWSPACE ?? "—"} ft²
+            <b>Grow space:</b> {properties.GROWSPACE ?? "—"} ft²
           </div>
           <div>
-            <b>Condition rating:</b> {p.CONDITION_RATING || "—"}
+            <b>Condition rating:</b> {properties.CONDITION_RATING || "—"}
           </div>
 
           <hr style={{ margin: "6px 0" }} />
 
           <div>
-            <b>Ownership:</b> {p.OWNERSHIP || "—"}
+            <b>Ownership:</b> {properties.OWNERSHIP || "—"}
           </div>
           <div>
-            <b>Status:</b> {p.CURRENT_STATUS || "—"}
+            <b>Status:</b> {properties.CURRENT_STATUS || "—"}
           </div>
           <div>
-            <b>Planted:</b> {formatDate(p.PLANTED_DATE)}
+            <b>Planted:</b> {formatDate(properties.PLANTED_DATE)}
           </div>
           <div>
-            <b>Last verified:</b> {formatDate(p.LAST_VERIFY_DATE)}
+            <b>Last verified:</b> {formatDate(properties.LAST_VERIFY_DATE)}
           </div>
 
           <hr style={{ margin: "6px 0" }} />
 
           <div>
             <b>Rank:</b>
-            {p.TOTAL_RANK}
+            {properties.TOTAL_RANK}
           </div>
           <div>
             <b>Total count:</b>
-            {p.TOTAL_COUNT}
+            {properties.TOTAL_COUNT}
           </div>
         </div>
       ) : (
