@@ -3,65 +3,65 @@ import { useEffect, useRef, useState } from "react";
 const imageCache: Record<string, string | null> = {};
 
 export function useWikipediaImage(scientificName: string | null) {
-  const cachedImage =
-    scientificName != null ? imageCache[scientificName] : undefined;
+  const cachedImage = scientificName
+    ? (imageCache[scientificName] ?? null)
+    : null;
 
-  const [imageUrl, setImageUrl] = useState<string | null>(cachedImage ?? null);
+  // Initialize from cache
+  const [imageUrl, setImageUrl] = useState<string | null>(cachedImage);
   const [isLoading, setIsLoading] = useState(false);
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  const lastRequestedRef = useRef<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  // Sync cached value immediately (no lint warning)
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setImageUrl(cachedImage ?? null);
+    setImageUrl(cachedImage);
   }, [cachedImage]);
 
   useEffect(() => {
-    if (!scientificName) return;
-    if (cachedImage !== undefined) return;
-    if (lastRequestedRef.current === scientificName) return;
+    if (!scientificName || scientificName in imageCache) return;
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (abortRef.current) abortRef.current.abort();
 
     debounceRef.current = setTimeout(() => {
       setIsLoading(true);
-      lastRequestedRef.current = scientificName;
+
+      const controller = new AbortController();
+      abortRef.current = controller;
 
       const title = encodeURIComponent(scientificName);
 
-      fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`)
+      fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`, {
+        signal: controller.signal,
+      })
         .then((res) => res.json())
         .then(
           (data: {
-            thumbnail: {
+            thumbnail?: {
               source: string;
               width: number;
               height: number;
             };
           }) => {
-            const url = data.thumbnail?.source || null;
+            const url = data.thumbnail?.source ?? null;
             imageCache[scientificName] = url;
             setImageUrl(url);
           },
         )
-        .catch(() => {
+        .catch((err: Error) => {
+          if (err.name === "AbortError") return;
           imageCache[scientificName] = null;
           setImageUrl(null);
         })
-        .finally(() => {
-          setIsLoading(false);
-        });
+        .finally(() => setIsLoading(false));
     }, 800);
 
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (abortRef.current) abortRef.current.abort();
     };
-  }, [scientificName, cachedImage]);
+  }, [scientificName]);
 
-  return {
-    imageUrl,
-    isLoading,
-  };
+  return { imageUrl, isLoading };
 }
