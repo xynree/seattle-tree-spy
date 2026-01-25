@@ -1,0 +1,47 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { TextLayer } from "@deck.gl/layers";
+import type { ControlOptions, TreeFeature } from "../types";
+import { processTrees } from "../helpers";
+
+export function TreeLabelLayer({
+  trees,
+  options,
+}: {
+  trees: TreeFeature[];
+  options: ControlOptions;
+}): TextLayer {
+  return new TextLayer<TreeFeature>({
+    id: "tree-labels",
+    data: processTrees(trees, options),
+    pickable: false,
+    getPosition: (f: TreeFeature) => [
+      f.geometry.coordinates[0],
+      f.geometry.coordinates[1],
+      0,
+    ],
+    parameters: {
+      //@ts-expect-error type
+      depthTest: false,
+    },
+
+    getText: (f: TreeFeature) =>
+      f.properties?.COMMON_NAME || f.properties?.SCIENTIFIC_NAME || "",
+
+    getSize: 12,
+
+    getColor: [255, 255, 255, 255],
+
+    sizeMinPixels: 2,
+    sizeMaxPixels: 20,
+
+    getTextAnchor: "middle",
+    getAlignmentBaseline: "top",
+
+    billboard: true,
+    background: true,
+    backgroundPadding: [8, 4],
+    getBackgroundColor: [0, 0, 0, 255],
+    backgroundBorderRadius: 12,
+    fontFamily: "sans-serif",
+  });
+}

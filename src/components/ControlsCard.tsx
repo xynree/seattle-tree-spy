@@ -15,6 +15,7 @@ export default function ControlsCard({
       showPrivate: id === "show-private" ? checked : options.showPrivate,
       showPlanned: id === "show-planned" ? checked : options.showPlanned,
       scaleBySize: id === "scale-by-size" ? checked : options.scaleBySize,
+      showLabels: id === "show-labels" ? checked : options.showLabels,
     });
   }
 
@@ -68,6 +69,18 @@ export default function ControlsCard({
         />
         <label htmlFor="scale-by-size" className="text-sm">
           Scale By Size
+        </label>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="show-labels"
+          checked={options.showLabels}
+          onChange={(e) => handleChange(e.target.checked, e.target.id)}
+        />
+        <label htmlFor="show-labels" className="text-sm">
+          Show Labels
         </label>
       </div>
     </div>

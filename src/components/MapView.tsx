@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DeckGL from "@deck.gl/react";
 import type { MapViewState, PickingInfo } from "deck.gl";
 import { DEFAULT_CONTROLS } from "../config";
@@ -13,6 +13,7 @@ import WelcomeOverlay from "./WelcomeOverlay";
 import AttributionChip from "./AttributionChip";
 import MousePopup from "./MousePopup";
 import AggregationCard from "./AggregationCard";
+import { TreeLabelLayer } from "../layers/TreeLabelLayer";
 
 export default function MapView() {
   const [viewState, setViewState] = useUserLocation();
@@ -26,14 +27,26 @@ export default function MapView() {
 
   const [options, setOptions] = useState(DEFAULT_CONTROLS);
 
-  const layers = [
-    BaseMapLayer(),
-    TreeLayer({
-      trees,
-      options,
-      selectedId: selected?.id,
-    }),
-  ];
+  const layers = useMemo(() => {
+    const base = [
+      BaseMapLayer(),
+      TreeLayer({
+        trees,
+        options,
+        selectedId: selected?.id,
+      }),
+    ];
+
+    return options.showLabels
+      ? [
+          ...base,
+          TreeLabelLayer({
+            trees,
+            options,
+          }),
+        ]
+      : base;
+  }, [options, selected, trees]);
 
   return (
     <div className="w-screen h-screen">

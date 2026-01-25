@@ -11,4 +11,7 @@ export const GENUS_LOOKUP = {
   "Acer x Freemanii `Armstrong`": "Acer_×_freemanii",
   "Prunus cerasifera cv/hyb": "Prunus_cerasifera",
   "Acer platanoides f Schwedler": "Acer_platanoides",
+  "Acer rubrum Red Sunset (R)": "Acer_rubrum",
 };
+
+export const TREE_MODEL_PATH = "/seattle-tree-data-viz/models/tree2.glb";

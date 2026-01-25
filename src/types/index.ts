@@ -3,6 +3,7 @@ export type ControlOptions = {
   showPrivate: boolean;
   showPlanned: boolean;
   scaleBySize: boolean;
+  showLabels: boolean;
 };
 
 export type TreeFeatureCollection = GeoJSON.FeatureCollection<

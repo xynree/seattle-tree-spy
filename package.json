@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@deck.gl/layers": "^9.2.6",
     "@deck.gl/mesh-layers": "^9.2.6",
     "@deck.gl/react": "^9.2.6",
     "@tailwindcss/vite": "^4.1.18",

@@ -1,5 +1,5 @@
 import { WebMercatorViewport, type MapViewState } from "deck.gl";
-import type { TreeFeature } from "../types";
+import type { ControlOptions, TreeFeature } from "../types";
 
 // Returns bounds in degrees
 export function getViewportBounds(viewState: MapViewState) {
@@ -121,4 +121,23 @@ export function cleanupScientificName(string: string) {
     .replace(/\s'.*$/, "")
     .replace(/\svar\..*$/, "")
     .replace(/\ssp\..*$/, "");
+}
+
+export function processTrees(
+  trees: TreeFeature[],
+  options: ControlOptions,
+): TreeFeature[] {
+  if (!options.showRemoved) {
+    trees = trees.filter((t) => t.properties.CURRENT_STATUS !== "REMOVED");
+  }
+
+  if (!options.showPrivate) {
+    trees = trees.filter((t) => t.properties.OWNERSHIP !== "PRIV");
+  }
+
+  if (!options.showPlanned) {
+    trees = trees.filter((t) => t.properties.CURRENT_STATUS !== "PLANNED");
+  }
+
+  return trees;
 }

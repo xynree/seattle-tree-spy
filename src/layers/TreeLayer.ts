@@ -1,9 +1,8 @@
 import { ScenegraphLayer } from "@deck.gl/mesh-layers";
 import { COORDINATE_SYSTEM } from "deck.gl";
-import { computeScale, hashToUnit } from "../helpers";
+import { computeScale, hashToUnit, processTrees } from "../helpers";
 import type { ControlOptions, TreeFeature } from "../types";
-
-const treeModel = "/seattle-tree-data-viz/models/tree2.glb";
+import { TREE_MODEL_PATH } from "../constants";
 
 type TreeLayerProps = {
   trees: TreeFeature[];
@@ -14,23 +13,11 @@ type TreeLayerProps = {
 export function TreeLayer({ trees, options, selectedId }: TreeLayerProps) {
   if (!trees.length) return null;
 
-  if (!options.showRemoved) {
-    trees = trees.filter((t) => t.properties.CURRENT_STATUS !== "REMOVED");
-  }
-
-  if (!options.showPrivate) {
-    trees = trees.filter((t) => t.properties.OWNERSHIP !== "PRIV");
-  }
-
-  if (!options.showPlanned) {
-    trees = trees.filter((t) => t.properties.CURRENT_STATUS !== "PLANNED");
-  }
-
   return new ScenegraphLayer({
     id: "trees",
-    data: trees,
+    data: processTrees(trees, options),
     pickable: true,
-    scenegraph: treeModel,
+    scenegraph: TREE_MODEL_PATH,
     getPosition: (f: TreeFeature) => [
       f.geometry.coordinates[0],
       f.geometry.coordinates[1],
