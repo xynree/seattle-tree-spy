@@ -8,7 +8,7 @@ export default function WikipediaImage({
   const { imageUrl, isLoading } = useWikipediaImage(scientificName);
 
   return (
-    <div className="bg-gray-200 rounded-lg my-2 h-48">
+    <div className="bg-gray-200 rounded-lg my-2 h-48 min-48">
       {imageUrl ? (
         <img
           src={imageUrl}

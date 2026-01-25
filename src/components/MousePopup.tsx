@@ -1,4 +1,4 @@
-import type { TreeFeature } from "../types";
+import type { TreeFeature, TreeProperties } from "../types";
 
 export default function MousePopup({
   popup,
@@ -11,6 +11,8 @@ export default function MousePopup({
 }) {
   const p = popup.feature.properties;
 
+  const VIEWABLE_PROPS: (keyof TreeProperties)[] = ["DIAM", "SCIENTIFIC_NAME"];
+
   return (
     <div
       className="fixed bg-white p-2 rounded-md text-sm z-10"
@@ -19,7 +21,11 @@ export default function MousePopup({
       <div style={{ fontWeight: 600, marginBottom: 6 }}>
         {p.COMMON_NAME || "Unknown Tree"}
       </div>
-      <div>Diameter: {p.DIAM ? `${p.DIAM} in` : "—"}</div>
+      {VIEWABLE_PROPS.map((prop) => (
+        <div className="text-xs">
+          <span className="font-medium">{prop}</span>: {p[prop] ?? ""}
+        </div>
+      ))}
     </div>
   );
 }

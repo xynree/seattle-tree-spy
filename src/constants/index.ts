@@ -7,4 +7,6 @@ export const SEATTLE_FALLBACK_VIEW = {
 
 export const GENUS_LOOKUP = {
   "Crataegus x Lavallei": "Crataegus_×_lavalleei",
+  "Acer x Freemanii Autumn Blaze": "Acer_×_freemanii",
+  "Acer x Freemanii `Armstrong`": "Acer_×_freemanii",
 };

@@ -66,7 +66,7 @@ export default function AggregationOverlay({
   }, [features]);
 
   return (
-    <div className="text-sm flex flex-col items-center gap-2 bg-white shadow-sm relative p-3 rounded-xl z-10 min-h-12">
+    <div className="text-sm flex flex-col items-center gap-2 bg-white shadow-sm relative p-3 rounded-xl z-10 h-min">
       <canvas ref={canvasRef} />
     </div>
   );

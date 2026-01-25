@@ -25,10 +25,9 @@ export function useWikipediaImage(scientificName: string | null) {
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
     if (abortRef.current) abortRef.current.abort();
+    setIsLoading(true);
 
     debounceRef.current = setTimeout(() => {
-      setIsLoading(true);
-
       const controller = new AbortController();
       abortRef.current = controller;
 
@@ -63,7 +62,7 @@ export function useWikipediaImage(scientificName: string | null) {
           setImageUrl(null);
         })
         .finally(() => setIsLoading(false));
-    }, 800);
+    }, 500);
 
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);

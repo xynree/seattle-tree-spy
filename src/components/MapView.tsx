@@ -38,7 +38,7 @@ export default function MapView() {
   return (
     <div className="w-screen h-screen">
       {/* Left Panels */}
-      <div className="absolute flex flex-col gap-4 top-4 left-4">
+      <div className="absolute flex flex-col gap-4 top-4 left-4 max-h-[90vh] overflow-hidden">
         <FeatureCard feature={selected} />
         <AggregationOverlay features={trees} />
       </div>
