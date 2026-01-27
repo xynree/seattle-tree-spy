@@ -43,17 +43,18 @@ export default function MapView() {
           TreeLabelLayer({
             trees,
             options,
+            zoom: viewState.zoom,
           }),
         ]
       : base;
-  }, [options, selected, trees]);
+  }, [options, selected, trees, viewState]);
 
   return (
     <div className="w-screen h-screen">
       {/* Left Panels */}
       <div className="absolute flex flex-col gap-4 top-4 left-4 max-h-[90vh] overflow-hidden">
         <FeatureCard feature={selected} />
-        <AggregationCard features={trees} />
+        {/* <AggregationCard features={trees} /> */}
       </div>
 
       <WelcomeOverlay />

@@ -15,3 +15,5 @@ export const GENUS_LOOKUP = {
 };
 
 export const TREE_MODEL_PATH = "/seattle-tree-spy/models/tree2.glb";
+
+export const TREE_ZOOM_THRESHOLD = 14;

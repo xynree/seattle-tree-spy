@@ -6,9 +6,11 @@ import { processTrees } from "../helpers";
 export function TreeLabelLayer({
   trees,
   options,
+  zoom,
 }: {
   trees: TreeFeature[];
   options: ControlOptions;
+  zoom: number;
 }): TextLayer {
   return new TextLayer<TreeFeature>({
     id: "tree-labels",
@@ -27,7 +29,10 @@ export function TreeLabelLayer({
     getText: (f: TreeFeature) =>
       f.properties?.COMMON_NAME || f.properties?.SCIENTIFIC_NAME || "",
 
-    getSize: 12,
+    getSize: () => {
+      const scaleFactor = Math.max(1, Math.min(2, zoom / 20));
+      return 10 * scaleFactor;
+    },
 
     getColor: [255, 255, 255, 255],
 

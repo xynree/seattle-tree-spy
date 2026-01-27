@@ -105,8 +105,8 @@ export function computeScale({
   const normalizedScale = 0.3 + (diameter / 50) * 2.7;
 
   // Clamp the final scale to min/max values
-  const minScale = 0.1;
-  const maxScale = 6.0;
+  const minScale = 0.2;
+  const maxScale = 8.0;
   const clampedScale = Math.max(minScale, Math.min(maxScale, normalizedScale));
 
   return [clampedScale, clampedScale, clampedScale] as [number, number, number];
