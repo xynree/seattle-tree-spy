@@ -25,14 +25,21 @@ export default function WikipediaSummary({
         ) : null}
       </div>
       {summary?.extract_html ? (
-        <div
-          className="text-sm mb-2"
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        <span
+          className="text-sm"
           dangerouslySetInnerHTML={{ __html: summary.extract_html }}
         />
       ) : (
         ""
       )}
+
+      <a
+        className="bg-gray-100 p-2 px-4 my-1 w-min text-nowrap text-sm rounded-full"
+        href={summary?.content_urls?.desktop.page ?? ""}
+        target="_blank"
+      >
+        View more
+      </a>
     </>
   );
 }

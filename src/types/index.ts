@@ -106,4 +106,17 @@ export interface WikipediaPageSummary {
     lat: number;
     lon: number;
   };
+  // URLS to wikipedia page
+  content_urls: {
+    desktop: {
+      page: string;
+      revisions: string;
+      edit: string;
+    };
+    mobile: {
+      page: string;
+      revisions: string;
+      edit: string;
+    };
+  };
 }

@@ -12,6 +12,9 @@ export const GENUS_LOOKUP = {
   "Prunus cerasifera cv/hyb": "Prunus_cerasifera",
   "Acer platanoides f Schwedler": "Acer_platanoides",
   "Acer rubrum Red Sunset (R)": "Acer_rubrum",
+  "Cornus nuttallii x florida": "Cornus_nuttallii",
+  "Ginkgo biloba Autumn Gold TM": "Ginkgo_biloba",
+  "Acer saccharum ssp. Nigrum `Gr": "Acer_saccharum",
 };
 
 export const TREE_MODEL_PATH = "/seattle-tree-spy/models/tree2.glb";
