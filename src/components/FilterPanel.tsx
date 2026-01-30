@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { TreeFeature } from "../types";
 import { COMMON_GENUS_NAME_LOOKUP } from "../constants";
 
@@ -13,6 +13,15 @@ export default function FilterPanel({
   selectedGenuses,
   setSelectedGenuses,
 }: FilterPanelProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  function handleWheelEvent(e: React.WheelEvent) {
+    if (e.deltaY !== 0) {
+      e.preventDefault();
+      scrollContainerRef.current.scrollLeft += e.deltaY;
+    }
+  }
+
   useEffect(() => {
     // If a selected genus is not in the current trees, remove it from the selected genuses
     setSelectedGenuses((prev) =>
@@ -59,13 +68,17 @@ export default function FilterPanel({
 
   return (
     topGenuses.length > 0 && (
-      <div className="flex gap-2 z-10 relative">
-        <div className="flex gap-2 overflow-x-clip">
+      <div
+        ref={scrollContainerRef}
+        onWheel={handleWheelEvent}
+        className="scrollbar-hide flex gap-2 z-10 relative overflow-x-auto"
+      >
+        <div className="flex gap-2">
           {topGenuses.map(({ genus }) => (
             <div
               key={genus}
               onClick={() => handleGenusToggle(genus)}
-              className={`shadow-md border border-gray-300 bg-white text-sm font-medium p-2 px-3 rounded-2xl h-min cursor-pointer ${selectedGenuses.includes(genus) ? "border border-green-700 !bg-green-600 text-white" : ""}`}
+              className={`whitespace-nowrap shadow-md border border-gray-300 bg-white text-sm font-medium p-2 px-3 rounded-2xl h-min cursor-pointer ${selectedGenuses.includes(genus) ? "border border-green-700 !bg-green-600 text-white" : ""}`}
             >
               {COMMON_GENUS_NAME_LOOKUP[genus]
                 ? COMMON_GENUS_NAME_LOOKUP[genus]

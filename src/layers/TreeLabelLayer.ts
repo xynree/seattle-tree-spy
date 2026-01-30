@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { TextLayer } from "@deck.gl/layers";
 import type { ControlOptions, TreeFeature } from "../types";
 import { processTrees } from "../helpers";

@@ -20,7 +20,7 @@ export default function ControlsCard({
   }
 
   return (
-    <div className="flex flex-col gap-1 bg-white rounded-xl z-10 relative p-4 shadow-md">
+    <div className="flex flex-col gap-1 bg-white whitespace-nowrap rounded-xl z-10 relative p-4 shadow-md h-min ml-auto">
       <div className="flex items-center gap-2">
         <input
           type="checkbox"

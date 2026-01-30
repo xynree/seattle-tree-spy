@@ -1,6 +1,6 @@
 export default function AttributionChip() {
   return (
-    <div className="text-sm flex items-center gap-2 bg-white shadow-sm absolute bottom-4 left-4 p-2 px-3 rounded-lg z-10">
+    <div className="text-sm flex items-center gap-2 bg-white shadow-sm relative p-2 px-3 rounded-xl w-min whitespace-nowrap z-10 mt-auto ">
       <p> Made by xynree</p>
 
       <div className="flex gap-2 text-gray-700">

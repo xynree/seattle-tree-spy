@@ -63,25 +63,32 @@ export default function MapView() {
 
   return (
     <div className="w-screen h-screen">
-      {/* Left Panels */}
-      <div className="absolute flex flex-col gap-2 top-4 left-4 max-h-[90vh] overflow-hidden">
-        <FilterPanel
-          trees={allTrees}
-          selectedGenuses={selectedGenuses}
-          setSelectedGenuses={setSelectedGenuses}
-        />
-        <FeatureCard feature={selected} setFeature={setSelected} />
+      {/* Overlays */}
+      <div className="absolute flex flex-col gap-2 h-full w-full overflow-hidden">
+        <div className="flex flex-col gap-2 p-2">
+          {/* Top Panel */}
+          <FilterPanel
+            trees={allTrees}
+            selectedGenuses={selectedGenuses}
+            setSelectedGenuses={setSelectedGenuses}
+          />
+          <div className="flex h-[calc(100vh-64px)] justify-between">
+            {/* Left Panels */}
+            <div className="flex flex-col justify-between gap-2">
+              <FeatureCard feature={selected} setFeature={setSelected} />
+              <AttributionChip />
+            </div>
+
+            {/* Right Panels */}
+            <ControlsCard options={options} setOptions={setOptions} />
+          </div>
+        </div>
+
         {/* <AggregationCard features={trees} /> */}
       </div>
 
       <WelcomeOverlay />
-      <AttributionChip />
       {popup ? <MousePopup popup={popup} /> : ""}
-
-      {/* Right Panels */}
-      <div className="absolute top-4 right-4 flex flex-col gap-4">
-        <ControlsCard options={options} setOptions={setOptions} />
-      </div>
 
       {/* Map */}
       <DeckGL

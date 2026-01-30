@@ -24,9 +24,10 @@ export default function WikipediaSummary({
           </div>
         ) : null}
       </div>
+
       {summary?.extract_html ? (
         <span
-          className="text-sm"
+          className="text-sm h-max"
           dangerouslySetInnerHTML={{ __html: summary.extract_html }}
         />
       ) : (
