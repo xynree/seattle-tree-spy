@@ -120,3 +120,29 @@ export interface WikipediaPageSummary {
     };
   };
 }
+
+export interface WikipediaMedia {
+  leadImage: boolean;
+  section_id: number;
+  showInGallery: boolean;
+  title: string;
+  type: string;
+  srcset: {
+    src: string;
+    scale: string;
+  }[];
+  caption?: {
+    html: string;
+    text: string;
+  };
+}
+
+export interface WikipediaMediaList {
+  items: WikipediaMedia[];
+  revision: string;
+  tid: string;
+}
+
+export interface WikipediaInfo extends WikipediaPageSummary {
+  media_list: WikipediaMedia[];
+}

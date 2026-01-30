@@ -1,27 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { GENUS_LOOKUP } from "../constants";
 import { cleanupScientificName } from "../helpers";
-import type { WikipediaPageSummary } from "../types";
+import type {
+  WikipediaInfo,
+  WikipediaMedia,
+  WikipediaMediaList,
+  WikipediaPageSummary,
+} from "../types";
 
-const summaryCache: Record<string, WikipediaPageSummary> = {};
+const summaryCache: Record<string, WikipediaInfo> = {};
 
 export function useWikipediaSummary(scientificName: string | null) {
-  const cachedImage = scientificName
-    ? (summaryCache[scientificName]?.thumbnail?.source ?? null)
+  const cachedMediaList = scientificName
+    ? (summaryCache[scientificName]?.media_list ?? null)
     : null;
 
   // Initialize from cache
-  const [imageUrl, setImageUrl] = useState<string | null>(cachedImage);
+  const [mediaList, setMediaList] = useState<WikipediaMedia[]>(cachedMediaList);
   const [isLoading, setIsLoading] = useState(false);
-  const [wikipediaData, setWikipediaData] =
-    useState<WikipediaPageSummary>(null);
+  const [wikipediaData, setWikipediaData] = useState<WikipediaInfo>(null);
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    setImageUrl(cachedImage);
-  }, [cachedImage]);
+    setMediaList(cachedMediaList);
+  }, [cachedMediaList]);
 
   useEffect(() => {
     if (!scientificName || scientificName in summaryCache) return;
@@ -42,22 +46,29 @@ export function useWikipediaSummary(scientificName: string | null) {
         title = encodeURIComponent(cleanupScientificName(scientificName));
       }
 
-      fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`, {
-        signal: controller.signal,
-      })
-        .then((res) => res.json())
-        .then((data: WikipediaPageSummary) => {
-          console.log(data);
-          const url = data.thumbnail?.source ?? null;
-          summaryCache[scientificName] = data;
-          setImageUrl(url);
-          setWikipediaData(data);
+      Promise.all([
+        fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`, {
+          signal: controller.signal,
+        }),
+        fetch(`https://en.wikipedia.org/api/rest_v1/page/media-list/${title}`, {
+          signal: controller.signal,
+        }),
+      ])
+        .then((res) => Promise.all(res.map((r) => r.json())))
+        .then((data: [WikipediaPageSummary, WikipediaMediaList]) => {
+          const [summary, mediaList] = data;
+          summaryCache[scientificName] = {
+            ...summary,
+            media_list: mediaList.items,
+          };
+          setWikipediaData({ ...summary, media_list: mediaList.items });
+          setMediaList(mediaList.items);
         })
         .catch((err: Error) => {
           if (err.name === "AbortError") return;
           summaryCache[scientificName] = null;
-          setImageUrl(null);
           setWikipediaData(null);
+          setMediaList(null);
         })
         .finally(() => setIsLoading(false));
     }, 500);
@@ -68,5 +79,5 @@ export function useWikipediaSummary(scientificName: string | null) {
     };
   }, [scientificName]);
 
-  return { imageUrl, isLoading, summary: wikipediaData };
+  return { mediaList, isLoading, summary: wikipediaData };
 }

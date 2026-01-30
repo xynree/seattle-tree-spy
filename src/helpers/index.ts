@@ -1,5 +1,5 @@
 import { WebMercatorViewport, type MapViewState } from "deck.gl";
-import type { ControlOptions, TreeFeature } from "../types";
+import type { ControlOptions, TreeFeature, WikipediaMedia } from "../types";
 
 // Returns bounds in degrees
 export function getViewportBounds(viewState: MapViewState) {
@@ -148,4 +148,9 @@ export function snakeToTitleCase(input: string): string {
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+export function getWikiImageSource(media?: WikipediaMedia) {
+  if (!media) return "";
+  return media.srcset[2]?.src ?? media.srcset[1]?.src ?? media.srcset[0].src;
 }

@@ -22,7 +22,7 @@ export default function MousePopup({
         {p.COMMON_NAME || "Unknown Tree"}
       </div>
       {VIEWABLE_PROPS.map((prop) => (
-        <div className="text-xs">
+        <div className="text-xs" key={prop}>
           <span className="font-medium">{prop}</span>: {p[prop] ?? ""}
         </div>
       ))}
