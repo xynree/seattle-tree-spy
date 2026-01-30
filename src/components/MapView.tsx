@@ -29,9 +29,15 @@ export default function MapView() {
   const [selectedGenuses, setSelectedGenuses] = useState<string[]>([]);
 
   // Filter trees based on selected genuses
-  const trees = useMemo(() => selectedGenuses.length ? allTrees.filter((tree) =>
-      selectedGenuses.includes(tree.properties.GENUS)) : allTrees, [allTrees, selectedGenuses]);
-
+  const trees = useMemo(
+    () =>
+      selectedGenuses.length
+        ? allTrees.filter((tree) =>
+            selectedGenuses.includes(tree.properties.GENUS),
+          )
+        : allTrees,
+    [allTrees, selectedGenuses],
+  );
 
   const layers = useMemo(() => {
     const base = [
@@ -58,7 +64,12 @@ export default function MapView() {
   return (
     <div className="w-screen h-screen">
       {/* Left Panels */}
-      <div className="absolute flex flex-col gap-4 top-4 left-4 max-h-[90vh] overflow-hidden">
+      <div className="absolute flex flex-col gap-2 top-4 left-4 max-h-[90vh] overflow-hidden">
+        <FilterPanel
+          trees={allTrees}
+          selectedGenuses={selectedGenuses}
+          setSelectedGenuses={setSelectedGenuses}
+        />
         <FeatureCard feature={selected} setFeature={setSelected} />
         {/* <AggregationCard features={trees} /> */}
       </div>
@@ -69,11 +80,6 @@ export default function MapView() {
 
       {/* Right Panels */}
       <div className="absolute top-4 right-4 flex flex-col gap-4">
-        <FilterPanel
-          trees={allTrees}
-          selectedGenuses={selectedGenuses}
-          setSelectedGenuses={setSelectedGenuses}
-        />
         <ControlsCard options={options} setOptions={setOptions} />
       </div>
 

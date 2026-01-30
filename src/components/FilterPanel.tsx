@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { TreeFeature } from "../types";
 import { COMMON_GENUS_NAME_LOOKUP } from "../constants";
 
@@ -13,6 +13,15 @@ export default function FilterPanel({
   selectedGenuses,
   setSelectedGenuses,
 }: FilterPanelProps) {
+  useEffect(() => {
+    // If a selected genus is not in the current trees, remove it from the selected genuses
+    setSelectedGenuses((prev) =>
+      prev.filter((genus) =>
+        trees.some((tree) => tree.properties.GENUS === genus),
+      ),
+    );
+  }, [setSelectedGenuses, trees]);
+
   // Calculate top genuses from the trees data
   const topGenuses = useMemo(() => {
     const genusCounts = new Map<string, number>();
@@ -28,7 +37,7 @@ export default function FilterPanel({
     return Array.from(genusCounts.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 20)
-      .filter(([genus, _]) => genus !== 'Planting')
+      .filter(([genus]) => genus !== "Planting")
       .map(([genus, count]) => ({ genus, count }));
   }, [trees]);
 
@@ -48,48 +57,32 @@ export default function FilterPanel({
     setSelectedGenuses([]);
   };
 
-  return  topGenuses.length > 0 && (
-    <div className="flex flex-col gap-2 bg-white rounded-xl z-10 relative p-4 shadow-md">
-      <div className="flex items-center justify-between mb-1">
-        <h3 className="text-sm font-semibold text-gray-700">Filter by Genus</h3>
+  return (
+    topGenuses.length > 0 && (
+      <div className="flex gap-2 z-10 relative">
+        <div className="flex gap-2 overflow-x-clip">
+          {topGenuses.map(({ genus }) => (
+            <div
+              key={genus}
+              onClick={() => handleGenusToggle(genus)}
+              className={`shadow-md border border-gray-300 bg-white text-sm font-medium p-2 px-3 rounded-2xl h-min cursor-pointer ${selectedGenuses.includes(genus) ? "border border-green-700 !bg-green-600 text-white" : ""}`}
+            >
+              {COMMON_GENUS_NAME_LOOKUP[genus]
+                ? COMMON_GENUS_NAME_LOOKUP[genus]
+                : genus}
+            </div>
+          ))}
+        </div>
+
         {selectedGenuses.length > 0 && (
           <button
             onClick={clearFilters}
-            className="text-xs text-blue-600 hover:text-blue-800 underline"
+            className="p-2 px-4 text-sm rounded-2xl flex items-center gap-2 text-green-800 bg-green-100 border-green-500 border font-medium"
           >
             Clear
           </button>
         )}
       </div>
-
-      <div className="flex flex-col gap-1.5">
-        {topGenuses.map(({ genus, count }) => (
-          <div key={genus} className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id={`genus-${genus}`}
-              checked={selectedGenuses.includes(genus)}
-              onChange={() => handleGenusToggle(genus)}
-              className="cursor-pointer"
-            />
-            <label
-              htmlFor={`genus-${genus}`}
-              className="text-sm cursor-pointer flex-1"
-            >
-              <span className="font-medium">{COMMON_GENUS_NAME_LOOKUP[genus]?  COMMON_GENUS_NAME_LOOKUP[genus]: genus}</span>
-              <span className="text-gray-500 ml-1">({count.toLocaleString()})</span>
-            </label>
-          </div>
-        ))}
-      </div>
-
-      {selectedGenuses.length > 0 && (
-        <div className="mt-2 pt-2 border-t border-gray-200">
-          <p className="text-xs text-gray-600">
-            {selectedGenuses.length} genus{selectedGenuses.length !== 1 ? "es" : ""} selected
-          </p>
-        </div>
-      )}
-    </div>
+    )
   );
 }
