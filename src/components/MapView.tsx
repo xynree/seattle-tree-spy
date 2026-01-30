@@ -118,6 +118,18 @@ export default function MapView() {
           height: "100vh",
         }}
       />
+
+      {/* Open Street Map Attribution */}
+      <div className="absolute bottom-0 right-0 bg-white/80 backdrop-blur-sm px-2 py-1 text-xs z-10 rounded-tl-md">
+        <a
+          href="https://www.openstreetmap.org/copyright"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-700 hover:text-gray-900 hover:underline"
+        >
+          Map data © OpenStreetMap
+        </a>
+      </div>
     </div>
   );
 }
