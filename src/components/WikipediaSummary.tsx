@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useWikipediaSummary } from "../hooks";
 
 export default function WikipediaSummary({
@@ -20,23 +20,18 @@ export default function WikipediaSummary({
     );
   }, [mediaList]);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIndex(0);
-  }, [scientificName]);
-
   return (
     <>
       <div className="relative bg-gray-200 rounded-lg my-2 h-72 min-48">
         {galleryImages.length ? (
-          <div className="w-full h-full">
+          <div className="h-72">
             <img
               src={galleryImages[index]?.srcset[0].src ?? ""}
               alt={
                 galleryImages[index]?.caption?.text ??
                 galleryImages[index]?.title
               }
-              className="w-full object-contain h-72"
+              className="m-auto object-scale-down h-72"
             />
 
             {/* Caption */}
@@ -87,14 +82,15 @@ export default function WikipediaSummary({
       ) : (
         ""
       )}
-
-      <a
-        className="bg-gray-100 p-2 px-4 my-1 w-min text-nowrap text-sm rounded-full"
-        href={summary?.content_urls?.desktop.page ?? ""}
-        target="_blank"
-      >
-        View more
-      </a>
+      <span>
+        <a
+          className="text-blue-500 pl-2 my-1 w-min text-nowrap text-sm rounded-full"
+          href={summary?.content_urls?.desktop.page ?? ""}
+          target="_blank"
+        >
+          View more
+        </a>
+      </span>
     </>
   );
 }

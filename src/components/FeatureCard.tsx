@@ -2,8 +2,9 @@ import { useMemo } from "react";
 import type { TreeFeature } from "../types";
 import useStreetViewLink from "../hooks/useStreetViewLink";
 import { featureTextFormatters } from "../config";
-import { snakeToTitleCase } from "../helpers";
+import { formatDate, snakeToTitleCase } from "../helpers";
 import WikipediaSummary from "./WikipediaSummary";
+import TreeSizeTimeline from "./TreeSizeTimeline";
 
 export default function FeatureCard({
   feature,
@@ -57,7 +58,31 @@ export default function FeatureCard({
         </div>
       </div>
 
-      <WikipediaSummary scientificName={feature.properties.SCIENTIFIC_NAME} />
+      <WikipediaSummary
+        key={feature.properties.SCIENTIFIC_NAME}
+        scientificName={feature.properties.SCIENTIFIC_NAME}
+      />
+
+      {/* Dates */}
+      <div className="flex gap-2 w-full">
+        <div className="flex flex-col gap-1 w-full rounded-2xl bg-gray-50 border border-gray-100 p-2 px-4">
+          <span className="text-xs font-medium text-gray-500">Planted</span>
+          <span className="text-xl font-semibold">
+            {formatDate(feature.properties.PLANTED_DATE)}
+          </span>
+        </div>
+        <div className="flex flex-col gap-1 w-full rounded-2xl bg-gray-50 border-gray-100 border p-2 px-4">
+          <span className="text-xs font-medium text-gray-500">
+            Last Verified
+          </span>
+          <span className="text-xl font-semibold">
+            {formatDate(feature.properties.LAST_VERIFY_DATE)}
+          </span>
+        </div>
+      </div>
+
+      {/* Size */}
+      <TreeSizeTimeline diameter={feature.properties.DIAM} />
 
       {/* Properties */}
 

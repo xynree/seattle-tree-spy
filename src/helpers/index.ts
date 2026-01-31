@@ -1,5 +1,5 @@
 import { WebMercatorViewport, type MapViewState } from "deck.gl";
-import type { ControlOptions, TreeFeature, WikipediaMedia } from "../types";
+import type { ControlOptions, TreeFeature } from "../types";
 
 // Returns bounds in degrees
 export function getViewportBounds(viewState: MapViewState) {
